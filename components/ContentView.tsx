@@ -1,7 +1,7 @@
-
 import React from 'react';
 import type { DayData } from '../types';
 import Card from './Card';
+import CurrentAngelView from './CurrentAngelView';
 
 interface ContentViewProps {
   title: string;
@@ -73,7 +73,17 @@ const ContentView: React.FC<ContentViewProps> = ({ title, data, isDayData }) => 
     );
   }
 
-  // Handle general info and hourly angels
+  // Handle Current Angel
+  if (title === "Current Angel") {
+    return (
+      <div>
+        <h2 className="text-4xl font-bold text-amber-300 font-cinzel mb-6 pb-2 border-b-2 border-amber-400/30">{title}</h2>
+        <CurrentAngelView hourlyAngelsData={data} />
+       </div>
+    );
+  }
+
+  // Handle general info
   if (typeof data === 'string' || Array.isArray(data)) {
      return (
         <div>
@@ -83,34 +93,6 @@ const ContentView: React.FC<ContentViewProps> = ({ title, data, isDayData }) => 
           </Card>
         </div>
       );
-  }
-
-  if (title === "Hourly Angels") {
-    return (
-       <div>
-        <h2 className="text-4xl font-bold text-amber-300 font-cinzel mb-6 pb-2 border-b-2 border-amber-400/30">{title}</h2>
-        <div className="space-y-8">
-        {Object.entries(data).map(([day, times]) => (
-            <Card key={day} title={day}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-                    <div>
-                        <h4 className="font-bold text-lg text-amber-200 mb-2 border-b border-amber-200/20 pb-1">Hours of the Day</h4>
-                        <ul className="space-y-1 text-sm">
-                            {(times as any).day.map((h: {hour: string; angel: string}, i: number) => <li key={i}>{h.hour}: {h.angel}</li>)}
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-lg text-amber-200 mb-2 border-b border-amber-200/20 pb-1">Hours of the Night</h4>
-                         <ul className="space-y-1 text-sm">
-                             {(times as any).night.map((h: {hour: string; angel: string}, i: number) => <li key={i}>{h.hour}: {h.angel}</li>)}
-                        </ul>
-                    </div>
-                </div>
-            </Card>
-        ))}
-        </div>
-       </div>
-    );
   }
 
   return <div>Content could not be displayed.</div>;

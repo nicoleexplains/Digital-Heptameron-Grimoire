@@ -4,12 +4,25 @@ import { GEMINI_MODEL } from '../constants';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
 
+// FIX: Create a serializable version of grimoireData to avoid stringifying JSX elements.
+const serializableGrimoireData = grimoireData.map(day => {
+    const { sigil, ...restOfAngel } = day.angel;
+    return {
+        ...day,
+        angel: {
+            ...restOfAngel,
+            sigil: `[Sigil for ${day.angel.name}]` // Replace JSX with a string description
+        }
+    };
+});
+
+
 // Combine all grimoire data into a single string context
 const fullContext = `
 Introduction: ${JSON.stringify(generalInfo.introduction.content)}
 Circle Composition: ${JSON.stringify(generalInfo.circle_composition.content)}
 Consecrations: ${JSON.stringify(generalInfo.consecrations.content)}
-Daily Information: ${JSON.stringify(grimoireData)}
+Daily Information: ${JSON.stringify(serializableGrimoireData)}
 Hourly Angels: ${JSON.stringify(hourlyAngels)}
 `;
 

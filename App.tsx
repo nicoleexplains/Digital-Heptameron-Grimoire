@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import Sidebar from './components/Sidebar';
 import ContentView from './components/ContentView';
@@ -11,10 +10,12 @@ const App: React.FC = () => {
   const [selectedSection, setSelectedSection] = useState<string>(SECTIONS[0]);
 
   const currentData = useMemo(() => {
-    if (generalInfo.hasOwnProperty(selectedSection)) {
-      return generalInfo[selectedSection as GeneralInfoKey].content;
+    // FIX: Convert section title to snake_case to match keys in generalInfo object
+    const generalInfoKey = selectedSection.toLowerCase().replace(/ /g, '_') as GeneralInfoKey;
+    if (generalInfo.hasOwnProperty(generalInfoKey)) {
+      return generalInfo[generalInfoKey].content;
     }
-    if (selectedSection === 'Hourly Angels') {
+    if (selectedSection === 'Current Angel') {
         return hourlyAngels;
     }
     return grimoireData.find(d => d.day === selectedSection) || null;

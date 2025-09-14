@@ -1,4 +1,3 @@
-
 export const SECTIONS = [
   'Introduction',
   'Circle Composition',
@@ -9,7 +8,7 @@ export const SECTIONS = [
   'Thursday',
   'Friday',
   'Saturday',
-  'Hourly Angels',
+  'Current Angel',
   'Consecrations'
 ];
 
